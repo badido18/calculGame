@@ -5,7 +5,8 @@ class Game {
         this.StoState = new StoppedState(this);
         this.state = this.FiniState;
         this.exp = new Operation("1+1", 2);
-        this.expressions = null // getexpressions
+        this.indice = 0;
+        this.operations = Array() // getexpressions
         this.score = 0;
         this.level = 0;
     }
@@ -21,21 +22,8 @@ class Game {
     VerifAnswer(ans) {
         return (ans == this.exp.sol);
     }
-
-
-
-    setLevelMedium() {
-
-    }
-    setLevelHard() {
-
-    }
     alreadyPlaying() {
         document.getElementById("remark").innerText = "You are already in a game";
-    }
-
-    setLevelEasy() {
-
     }
 
     GamePlay() {
@@ -81,8 +69,17 @@ class Game {
     }
 
     Next() {
-        this.exp = new Operation("1+5", 6); //next one ;
+        this.indice++;
+        this.exp = this.operations[this.indice]; //next one ;
         this.PrintExpression();
+    }
+
+    loadOperations() {
+        let creator = new AddCreator();
+        for (let i = 0; i < 10; i++) {
+            this.operations.push(creator.createOperation(this.level));
+        }
+        this.exp = this.operations[0];
     }
 
     printProcess() {
