@@ -4,8 +4,10 @@ class Game {
         this.FiniState = new FinishedState(this);
         this.StoState = new StoppedState(this);
         this.state = this.FiniState;
-        this.exp = new Expression("1+1", 2);
+        this.exp = new Operation("1+1", 2);
+        this.expressions = null // getexpressions
         this.score = 0;
+        this.level = 0;
     }
 
     PrintExpression() {
@@ -18,6 +20,22 @@ class Game {
 
     VerifAnswer(ans) {
         return (ans == this.exp.sol);
+    }
+
+
+
+    setLevelMedium() {
+
+    }
+    setLevelHard() {
+
+    }
+    alreadyPlaying() {
+        document.getElementById("remark").innerText = "You are already in a game";
+    }
+
+    setLevelEasy() {
+
     }
 
     GamePlay() {
@@ -35,7 +53,7 @@ class Game {
         document.getElementById("score").innerText = this.score;
     }
 
-    getScore() {
+    setScore() {
         document.getElementById("score").innerText = this.score;
     }
 
@@ -63,7 +81,7 @@ class Game {
     }
 
     Next() {
-        this.exp = new Expression("1+5", 6); //next one ;
+        this.exp = new Operation("1+5", 6); //next one ;
         this.PrintExpression();
     }
 
