@@ -18,8 +18,9 @@ class State {
         if (!evaluation) {
             this.game.setStoppedState();
         } else {
+            this.game.score++;
+            this.game.setScore();
             this.game.Next();
-            this.game.incScore();
         }
     }
 }

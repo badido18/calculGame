@@ -1,9 +1,13 @@
 class MultCreator extends OperationCreator {
-    createOperation(lvl) {
-        let arg1 = Math.floor((Math.random() * 10) + 1);
-        let arg2 = Math.floor((Math.random() * 10) + 1);
+    constructor(lvl) {
+        super(lvl)
+    }
+
+    createOperation() {
+        let arg1 = Math.floor((Math.random() * this.lvl.max) + this.lvl.min);
+        let arg2 = Math.floor((Math.random() * this.lvl.max) + this.lvl.min);
         let sol = arg1 * arg2
         let exp = "" + arg1 + " * " + arg2 + "";
-        return new Mult(exp, sol, lvl);
+        return new Mult(exp, sol, this.lvl);
     }
 }

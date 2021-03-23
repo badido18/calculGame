@@ -4,15 +4,16 @@ class Game {
         this.FiniState = new FinishedState(this);
         this.StoState = new StoppedState(this);
         this.state = this.FiniState;
-        this.exp = new Operation("1+1", 2);
+        this.exp = null;
         this.indice = 0;
-        this.operations = Array() // getexpressions
+        this.operations = new Array() // getexpressions
         this.score = 0;
         this.level = 0;
     }
 
     PrintExpression() {
-        document.getElementById("expression").innerText = this.exp.exp;
+        if (!!this.exp)
+            document.getElementById("expression").innerText = this.exp.exp;
     }
 
     getAnswer() {
@@ -48,9 +49,10 @@ class Game {
     tryAgain() {
         document.getElementById("expression").innerText = '';
         document.getElementById("remark").innerText = '';
-        document.getElementById("answer").innerText = '';
+        document.getElementById("answer").value = '';
         document.getElementById("score").innerText = this.score;
         this.score = 0
+        this.loadOperations();
         this.setFinishedState();
     }
 
@@ -58,7 +60,6 @@ class Game {
         switch (result) {
             case true:
                 this.printProcess();
-                this.Next();
                 break;
             case false:
                 this.printStopped();
@@ -70,14 +71,39 @@ class Game {
 
     Next() {
         this.indice++;
-        this.exp = this.operations[this.indice]; //next one ;
-        this.PrintExpression();
+        if (this.indice < this.operations.length) {
+            this.exp = this.operations[this.indice];
+            this.PrintExpression();
+        } else {
+            this.EndGame();
+        }
+    }
+
+    init() {
+        this.indice = 0;
+        this.score = 0;
+        this.operations = new Array();
+        this.loadOperations();
+        document.getElementById('answer').value = '';
+    }
+
+    EndGame() {
+        this.setFinishedState();
+        document.getElementById('remark').innerText = "You Won ! press play to play again";
+        this.init();
+        this.setScore();
     }
 
     loadOperations() {
-        let creator = new AddCreator();
+
+        this.indice = 0;
+        let Addcreator = new AddCreator(this.level);
+        let Minuscreator = new MinusCreator(this.level);
+        let Multcreator = new MultCreator(this.level);
+        let Divcreator = new DivCreator(this.level);
+        let creator = [Addcreator, Minuscreator, Multcreator, Divcreator]
         for (let i = 0; i < 10; i++) {
-            this.operations.push(creator.createOperation(this.level));
+            this.operations.push(creator[Math.floor((Math.random() * 4) + 0)].createOperation());
         }
         this.exp = this.operations[0];
     }
@@ -86,6 +112,13 @@ class Game {
         let remark = "correct";
         document.getElementById("score").innerText = this.score;
         document.getElementById("remark").innerText = remark;
+    }
+
+
+    setLevel(lvl) {
+        this.level = lvl
+        this.init();
+        this.PrintExpression();
     }
 
     printStopped() {

@@ -10,7 +10,7 @@ const Answer = () => {
 }
 
 const setLevel = (lvl) => {
-    Jeu.level = lvl;
+    Jeu.setLevel(lvl)
 }
 
-Jeu.loadOperations();
+Jeu.init();
